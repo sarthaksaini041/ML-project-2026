@@ -1,0 +1,12 @@
+# Raw API cache and per-user dumps (about 900 MB; regenerate with python -m src.collect)
+data/raw/
+data/processed/*.csv
+
+# Environment and tooling
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store

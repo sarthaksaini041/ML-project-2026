@@ -1,0 +1,45 @@
+{
+  "sample_size": 400,
+  "rating_bands": [
+    {
+      "name": "newbie",
+      "min": 0,
+      "max": 1199,
+      "count": 80
+    },
+    {
+      "name": "pupil",
+      "min": 1200,
+      "max": 1599,
+      "count": 80
+    },
+    {
+      "name": "specialist",
+      "min": 1600,
+      "max": 1999,
+      "count": 80
+    },
+    {
+      "name": "expert_candidate_master",
+      "min": 2000,
+      "max": 2399,
+      "count": 80
+    },
+    {
+      "name": "master_plus",
+      "min": 2400,
+      "max": 5000,
+      "count": 80
+    }
+  ],
+  "active_only": false,
+  "include_retired": false,
+  "submissions_page_size": 1000,
+  "api_min_interval_seconds": 2.1,
+  "max_retries": 6,
+  "contest_standings_enabled": false,
+  "min_contest_participants_to_fetch": 1,
+  "max_contests_to_fetch": null,
+  "random_seed": 335,
+  "stop_on_api_error": false
+}

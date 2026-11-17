@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Estimate how likely you are to solve a Codeforces problem, see topic-wise skill gaps and get problems at the right difficulty. An ES 335 machine learning project.">
+  <meta name="theme-color" content="#fbfaf7">
+  <title>Skill-Gap Estimator for Codeforces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/style.css?v=19">
+  <script type="module" src="./assets/app.js?v=19"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#top">Skill-Gap Estimator</a>
+    <nav aria-label="Sections">
+      <a href="#tool">Try it</a>
+      <a href="#question">Question</a>
+      <a href="#data">Data</a>
+      <a href="#methods">Methods</a>
+      <a href="#evaluation">Evaluation</a>
+      <a href="#skills">Skill gaps</a>
+      <a href="#limitations">Limitations</a>
+      <a href="#reproduce">Reproduce</a>
+      <a href="https://github.com/sarthaksaini041/ML-project-2026" class="repo-link">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap" id="top" aria-labelledby="title">
+    <div class="hero-copy">
+      <p class="kicker">ES 335 Machine Learning · IIT Gandhinagar · 2026</p>
+      <h1 id="title">Which problem should you solve next?</h1>
+      <p class="lead">A personalised difficulty and skill-gap estimator for Codeforces. From a user’s rating, contest record and submission history, classical machine-learning models estimate the chance of solving each problem, summarise topic strengths and weaknesses, and suggest problems that stretch without stalling.</p>
+      <dl class="facts" id="hero-facts">
+        <div><dt>Test ROC-AUC</dt><dd data-fact="auc">–</dd></div>
+        <div><dt>Baseline ROC-AUC</dt><dd data-fact="heuristic">–</dd></div>
+        <div><dt>Interactions</dt><dd data-fact="rows">–</dd></div>
+        <div><dt>Users</dt><dd data-fact="users">–</dd></div>
+      </dl>
+      <p class="byline">Sarthak Saini and Aditya Anup Dhomne</p>
+    </div>
+
+    <div class="card predictor" id="tool">
+      <h2>Analyse a Codeforces account</h2>
+      <p class="muted small">Your public history is fetched from Codeforces and analysed in this browser. Nothing is stored or sent anywhere else.</p>
+      <form id="handle-form">
+        <label for="handle">Codeforces handle</label>
+        <input id="handle" name="handle" required maxlength="64" placeholder="tourist" autocomplete="off" spellcheck="false">
+        <div class="form-actions">
+          <button class="primary" id="analyse" type="submit">Analyse</button>
+          <button class="secondary" id="example" type="button">Use an example</button>
+          <button class="secondary" id="cancel" type="button" hidden>Cancel</button>
+        </div>
+        <p class="field-help" id="status" role="status" aria-live="polite">Large histories can take a minute: Codeforces allows one request every two seconds.</p>
+        <p class="form-error" id="error" role="alert" hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="wrap analysis" id="analysis" hidden aria-labelledby="analysis-title">
+    <div class="analysis-head">
+      <h2 id="analysis-title">Analysis</h2>
+      <p class="muted" id="analysis-meta"></p>
+    </div>
+    <dl class="stats" id="profile-stats"></dl>
+
+    <div class="grid-2 panels">
+      <div class="card">
+        <h3>Rating history</h3>
+        <div id="rating-chart" class="chart"></div>
+      </div>
+      <div class="card">
+        <h3>New problems tried, last two years</h3>
+        <div id="activity-chart" class="chart"></div>
+        <p class="small muted" id="activity-note"></p>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <div class="card-head"><h3>Your topics</h3></div>
+      <p class="small muted">Based on how often your first submission was accepted, in topics where you have tried at least 10 problems. Choose “My weaker topics” in the recommendations to practise them.</p>
+      <div id="gaps"></div>
+    </div>
+
+    <div class="card panel" id="recommend">
+      <div class="card-head"><h3>Recommended problems</h3></div>
+      <form class="filters" id="filters">
+        <label>Lowest rating<input type="number" id="min-rating" step="100" min="800" max="3500"></label>
+        <label>Highest rating<input type="number" id="max-rating" step="100" min="800" max="3500"></label>
+        <label>Topic<select id="topic"></select></label>
+        <label>Order<select id="order">
+          <option value="stretch">Hardest you are likely to solve</option>
+          <option value="chance">Best chance first</option>
+        </select></label>
+        <button class="secondary" type="submit">Update</button>
+      </form>
+      <p class="small muted" id="rec-note"></p>
+      <ol class="recs" id="recs"></ol>
+    </div>
+
+    <div class="card panel">
+      <h3>Check a specific problem</h3>
+      <form class="filters" id="problem-form">
+        <label class="grow">Problem link or ID<input id="problem" placeholder="1850:E or a problem URL" autocomplete="off" spellcheck="false"></label>
+        <button class="secondary" type="submit">Estimate</button>
+      </form>
+      <div id="problem-result" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="wrap findings" aria-labelledby="findings-title">
+    <h2 id="findings-title" class="findings-title">Key findings</h2>
+    <div class="findings-grid">
+      <article class="finding">
+        <p class="finding-figure"><span data-fact="auc">–</span><span class="finding-vs">vs <span data-fact="heuristic">–</span></span></p>
+        <h3>Personal history beats rating alone</h3>
+        <p>Gradient Boosting ranks which problems a user will solve far better than the rating-gap baseline, with well-calibrated probabilities on a later year.</p>
+        <a href="#results">See the results</a>
+      </article>
+      <article class="finding">
+        <p class="finding-figure"><span data-fact="rec-model">–</span><span class="finding-vs">vs <span data-fact="rec-rating">–</span></span></p>
+        <h3>Recommendations beat rating-based picks</h3>
+        <p>On users’ real stretch attempts, the model’s ordering separates solved from unsolved problems better than choosing the closest rating first.</p>
+        <a href="#skills">See the evaluation</a>
+      </article>
+      <article class="finding">
+        <p class="finding-figure"><span data-fact="gap-diff">–</span><span class="finding-vs">points after adjustment</span></p>
+        <h3>Skill gaps describe, not predict</h3>
+        <p>Weak topics were solved less often, but the difference disappears once difficulty and overall skill are accounted for. We report this negative result.</p>
+        <a href="#skills">See the check</a>
+      </article>
+    </div>
+  </section>
+
+  <div class="wrap report-layout">
+    <aside class="toc" aria-label="Report contents">
+      <p class="toc-title">Report</p>
+      <ol>
+        <li><a href="#question">The question</a></li>
+        <li><a href="#data">Data</a></li>
+        <li><a href="#preprocessing">Features and preprocessing</a></li>
+        <li><a href="#methods">Baseline and methods</a></li>
+        <li><a href="#evaluation">Evaluation design</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#errors">Errors</a></li>
+        <li><a href="#skills">Skill gaps and recommendations</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#reproduce">Reproduce</a></li>
+      </ol>
+    </aside>
+  <article class="report">
+
+    <section id="question" aria-labelledby="h-question">
+      <h2 id="h-question"><span class="num">1</span>The question</h2>
+      <p class="statement">Can classical machine-learning models estimate the probability that a Codeforces user will solve a problem from their rating, contest performance, submission history and the problem’s difficulty and tags? And can those estimates identify weak topics and recommend problems at an appropriate difficulty?</p>
+      <div class="grid-2">
+        <div><h3>One row</h3><p>A user–problem interaction, created when the user first submits a solo solution to that problem.</p></div>
+        <div><h3>Target</h3><p>1 if the user gets an accepted submission on that problem within 30 days of the first attempt, otherwise 0.</p></div>
+        <div><h3>When the prediction is made</h3><p>Just before that first submission. Every feature uses only submissions and rating changes from strictly earlier.</p></div>
+        <div><h3>What a useful answer looks like</h3><p>Better-than-baseline ranking and well-calibrated probabilities on a later time period, and recommendations that beat simple rating-based selection. Nothing here is causal.</p></div>
+      </div>
+    </section>
+
+    <section id="data" aria-labelledby="h-data">
+      <h2 id="h-data"><span class="num">2</span>Data</h2>
+      <p>All data comes from the official <a href="https://codeforces.com/apiHelp">Codeforces API</a> with Python <code>requests</code>, using the public endpoints <code>user.ratedList</code>, <code>user.info</code>, <code>user.rating</code>, <code>user.status</code> and <code>problemset.problems</code>. We sampled 80 rated users from each of five rating bands and downloaded their complete submission histories, spacing requests 2.1 seconds apart and caching every response.</p>
+      <dl class="stats" id="data-stats"></dl>
+      <h3>Key variables</h3>
+      <ul>
+        <li><strong>Submissions:</strong> user, problem, time, verdict (Accepted, Wrong Answer and so on), participation mode (contest, practice, virtual).</li>
+        <li><strong>Problems:</strong> difficulty rating (800–3500) and topic tags such as dp, greedy or graphs.</li>
+        <li><strong>Rating history:</strong> the user’s rating before and after every rated contest, with its date.</li>
+        <li><strong>Target:</strong> whether the problem was accepted within 30 days of the first attempt (94% yes).</li>
+      </ul>
+      <h3>Cleaning and quality checks</h3>
+      <ul>
+        <li>All 400 histories were paginated back to the first submission, so a user’s first attempt really is their first.</li>
+        <li>Team submissions and submissions without a problem ID were dropped, and handles were lower-cased before joining.</li>
+        <li>Only rated problems are modelled, because difficulty is central to the question and to recommendations.</li>
+        <li>An interaction is kept only if its whole 30-day outcome window is observed before collection ended. Problems a user never attempted are never treated as failures.</li>
+      </ul>
+      <h3>What the training data shows</h3>
+      <div class="card chart-card">
+        <div class="tabs" role="group" aria-label="Choose a chart">
+          <button type="button" class="tab active" data-eda="gap" aria-pressed="true">Difficulty gap</button>
+          <button type="button" class="tab" data-eda="tags" aria-pressed="false">Topics</button>
+          <button type="button" class="tab" data-eda="bands" aria-pressed="false">User rating</button>
+          <button type="button" class="tab" data-eda="modes" aria-pressed="false">Mode</button>
+        </div>
+        <div id="eda" aria-live="polite"><p class="muted">Loading…</p></div>
+      </div>
+      <p>The headline fact is that <strong id="solved-rate">94%</strong> of attempted problems are solved within 30 days. Users mostly start problems they can finish and keep retrying, so “not solved” is the rare and informative outcome. Solve rates still fall steadily with relative difficulty, from 99% for problems far below a user’s rating to 85% far above. Graph and data-structure problems are solved least often.</p>
+    </section>
+
+    <section id="preprocessing" aria-labelledby="h-prep">
+      <h2 id="h-prep"><span class="num">3</span>Features and preprocessing</h2>
+      <p>Each user’s history is replayed in time order, like a film. Every time the user starts a new problem, we take a snapshot of their record <strong>at that moment</strong>, and only then update it. This gives 47 features per interaction, all computed from events strictly before the first attempt, so the model sees exactly what would have been known when the prediction is made.</p>
+      <div class="table-wrap info"><table class="info-table">
+        <thead><tr><th scope="col">Group</th><th scope="col">Features</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Rating and contests</th><td data-label="Features">Rating before the attempt (1400 if unrated, plus a flag), maximum rating, number of rated contests, last rating change, mean of the last five changes, days since the last contest</td></tr>
+          <tr><th scope="row">Difficulty</th><td data-label="Features">Problem rating, rating gap (problem − user), Elo expected score 1 / (1 + 10<sup>gap/400</sup>)</td></tr>
+          <tr><th scope="row">Submission history</th><td data-label="Features">Problems attempted so far and in the last 30 days, days active, overall solve rate, solve rate within ±200 rating of this problem</td></tr>
+          <tr><th scope="row">Topics</th><td data-label="Features">Solve rate on the problem’s tags (mean, minimum, relative to overall), experience in the least-practised tag, 25 tag indicators</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Preprocessing choices</h3>
+      <div class="table-wrap info"><table class="info-table">
+        <thead><tr><th scope="col">Choice</th><th scope="col">Why</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Only past events per row</th><td data-label="Why">Prevents leakage; unit tests check that future submissions never change past features</td></tr>
+          <tr><th scope="row">Beta(1, 1) smoothing of solve rates</th><td data-label="Why">One lucky solve should not read as 100%</td></tr>
+          <tr><th scope="row">“Unsolved as of that moment”</th><td data-label="Why">A later solve was not known at prediction time</td></tr>
+          <tr><th scope="row">Log transform of counts</th><td data-label="Why">Counts are very skewed; very active users would dominate</td></tr>
+          <tr><th scope="row">Scaling inside a pipeline</th><td data-label="Why">Learned from training rows only (needed for Logistic Regression)</td></tr>
+        </tbody>
+      </table></div>
+      <p>The most delicate choice is time. If a user tried problem A on Monday, tried B on Tuesday and solved A on Wednesday, then at the moment B starts, A counts as attempted but <em>not yet</em> solved, because that is all that was known on Tuesday. Using the final outcome instead would quietly leak the future into the features and inflate every score. Smoothing matters for the same reason: a user with a 1/1 record in a topic has shown very little, so the rate is pulled toward 50% until more evidence arrives.</p>
+    </section>
+
+    <section id="methods" aria-labelledby="h-methods">
+      <h2 id="h-methods"><span class="num">4</span>Baseline and methods</h2>
+      <div class="table-wrap info"><table class="info-table">
+        <thead><tr><th scope="col">Model</th><th scope="col">How it works</th><th scope="col">Why we use it</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Baseline (rating gap)</th><td data-label="How it works">Elo expected score from the user–problem rating difference; nothing is learned</td><td data-label="Why">The rule from our proposal: “pick problems near your rating”. Any model must beat it</td></tr>
+          <tr><th scope="row">Logistic Regression</th><td data-label="How it works">Weighted sum of features turned into a probability; C tuned</td><td data-label="Why">Interpretable; shows how far a linear model gets</td></tr>
+          <tr><th scope="row">Random Forest</th><td data-label="How it works">Averages many deep trees; depth and leaf size tuned</td><td data-label="Why">Captures non-linear effects and interactions</td></tr>
+          <tr><th scope="row">Gradient Boosting</th><td data-label="How it works">Trees built one after another, each fixing earlier errors; learning rate and tree size tuned</td><td data-label="Why">Usually the strongest classical model on tabular data</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Why this baseline.</strong> It is meaningful rather than trivial: it uses the strongest single pattern in the data (how hard the problem is relative to the user) and is exactly the rating-based selection that our recommendations are later compared against. If personal history adds nothing, the models should not beat it.</p>
+      <p><strong>Why these models.</strong> They form a ladder of flexibility. Logistic Regression tests whether straight-line effects are enough. The two tree ensembles test whether interactions matter, for example a rating gap of +300 meaning something different for a beginner than for an experienced user. More complex is not automatically better, so every model had to earn its place on validation data.</p>
+    </section>
+
+    <section id="evaluation" aria-labelledby="h-eval">
+      <h2 id="h-eval"><span class="num">5</span>Evaluation design</h2>
+      <p>The data is split <strong>by time</strong>, so the model always predicts the future from the past. The split was fixed before any modelling.</p>
+      <div class="table-wrap info"><table class="info-table">
+        <thead><tr><th scope="col">Part</th><th scope="col">Period</th><th scope="col">Rows</th><th scope="col">Used for</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Train</th><td data-label="Period">Before <span data-fact="cut1">Jan 2025</span></td><td data-label="Rows" data-fact="rows-train">–</td><td data-label="Used for">Fitting every model</td></tr>
+          <tr><th scope="row">Validation</th><td data-label="Period"><span data-fact="cut1">Jan 2025</span> to <span data-fact="cut2">Oct 2025</span></td><td data-label="Rows" data-fact="rows-val">–</td><td data-label="Used for">Choosing settings, model and threshold</td></tr>
+          <tr><th scope="row">Test</th><td data-label="Period">After <span data-fact="cut2">Oct 2025</span></td><td data-label="Rows" data-fact="rows-test">–</td><td data-label="Used for">Scored once, at the end</td></tr>
+        </tbody>
+      </table></div>
+      <ol class="steps">
+        <li><strong>Split by time, fixed before modelling.</strong> Real use means predicting the future from the past, so a random split, which would let the model learn from 2026 to “predict” 2023, would be too optimistic.</li>
+        <li><strong>Embargo.</strong> A training or validation row is kept only if its 30-day outcome window closes before the next period begins (<span data-fact="embargo">7,383</span> rows dropped), so no label depends on events in a later period.</li>
+        <li><strong>Tune on validation.</strong> Every configuration is fitted on training rows and compared by validation ROC-AUC. The test period is never looked at.</li>
+        <li><strong>Test once.</strong> The chosen configuration of each family is refitted on training plus validation and scored a single time on test.</li>
+      </ol>
+      <h3>Metrics</h3>
+      <div class="table-wrap info"><table class="info-table">
+        <thead><tr><th scope="col">Metric</th><th scope="col">What it tells us</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">ROC-AUC (main)</th><td data-label="Meaning">Chance a solved problem is ranked above an unsolved one; 0.5 is a coin flip</td></tr>
+          <tr><th scope="row">Precision (not solved)</th><td data-label="Meaning">When the model warns “likely unsolved”, how often it is right</td></tr>
+          <tr><th scope="row">Recall (not solved)</th><td data-label="Meaning">How many of the truly unsolved problems it catches</td></tr>
+          <tr><th scope="row">F1 (not solved)</th><td data-label="Meaning">One score balancing precision and recall</td></tr>
+          <tr><th scope="row">Accuracy</th><td data-label="Meaning">Shown but not trusted: predicting “solved” for everything is already 94% accurate</td></tr>
+          <tr><th scope="row">Cross-entropy</th><td data-label="Meaning">Whether the probabilities are honest; lower is better</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Why these metrics.</strong> ROC-AUC is the main one because recommendations depend on <em>ranking</em> problems correctly. Only 5.7% of test rows are unsolved, so accuracy rewards a model that ignores them, which is why precision, recall and F1 are measured on the rare “not solved” class. Their threshold is chosen on validation and frozen before testing. Because the tool shows probabilities to users, cross-entropy and a calibration chart check that a 90% estimate comes true about 90% of the time. All 95% intervals come from resampling whole test users, so one very active user’s rows move together.</p>
+    </section>
+
+    <section id="results" aria-labelledby="h-results">
+      <h2 id="h-results"><span class="num">6</span>Results</h2>
+      <div class="table-wrap"><table id="model-table"><caption>Test period, scored once after all tuning. Validation ROC-AUC chose each configuration; precision, recall and F1 use a threshold chosen on validation.</caption></table></div>
+      <ul class="takeaways" id="results-text"></ul>
+      <div class="grid-2 evidence">
+        <div class="card">
+          <h3>Calibration of the selected model</h3>
+          <div id="calibration" class="chart"></div>
+          <p class="small muted">Each point is a group of test interactions. Points on the diagonal mean the stated probability matched how often problems were actually solved.</p>
+        </div>
+        <div class="card">
+          <h3>Confusion matrix of the selected model</h3>
+          <div id="confusion"></div>
+          <p class="small muted">Test period, flagging “not solved” at the validation-chosen threshold.</p>
+        </div>
+        <div class="card span-2">
+          <div class="card-head"><h3>Performance by segment</h3>
+            <label class="inline-select"><span>Group by</span>
+              <select id="segment-select">
+                <option value="user_rating">User rating</option>
+                <option value="problem_rating">Problem rating</option>
+                <option value="mode">Participation mode</option>
+                <option value="tags">Topic</option>
+              </select>
+            </label>
+          </div>
+          <div id="segments"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="errors" aria-labelledby="h-errors">
+      <h2 id="h-errors"><span class="num">7</span>Errors and what the model relies on</h2>
+      <div class="grid-2">
+        <div>
+          <h3>Confident misses</h3>
+          <p id="miss-text"></p>
+          <ul id="miss-examples" class="examples"></ul>
+        </div>
+        <div>
+          <h3>Surprise solves</h3>
+          <p id="surprise-text"></p>
+          <ul id="surprise-examples" class="examples"></ul>
+        </div>
+      </div>
+      <h3>Permutation importance</h3>
+      <p class="muted small">Drop in test ROC-AUC when one feature is shuffled.</p>
+      <div id="importance"></div>
+      <p>By far the most useful signal is the user’s own solve rate at similar difficulty, followed by participation mode and the Elo expectation. Personal history at a given level tells more than either rating alone.</p>
+    </section>
+
+    <section id="skills" aria-labelledby="h-skills">
+      <h2 id="h-skills"><span class="num">8</span>Skill gaps and recommendations</h2>
+      <div class="grid-2">
+        <div><h3>How we tested model-based skill gaps</h3><p>For problems near a user’s rating, we compared the model’s estimate using their real record in a topic with the estimate after replacing that record by their overall one. This isolates personal weaknesses from topics that are hard for everyone. Because the test below found these gaps add little, the tool shows each user’s plain record by topic instead.</p></div>
+        <div><h3>How problems are recommended</h3><p>Among unattempted problems in the chosen rating range and topic, the default list shows the hardest ones the model still gives at least an 85% chance of being solved, a stretch that is likely to pay off. Each suggestion explains its difficulty, the relevant record and how similar estimates turned out.</p></div>
+      </div>
+      <h3>Do flagged skill gaps hold up?</h3>
+      <ul class="takeaways" id="gap-text"></ul>
+      <h3>Do recommendations beat rating-based selection?</h3>
+      <ul class="takeaways" id="rec-text"></ul>
+      <dl class="stats" id="rec-stats"></dl>
+    </section>
+
+    <section id="limitations" aria-labelledby="h-limits">
+      <h2 id="h-limits"><span class="num">9</span>Limitations</h2>
+      <ul>
+        <li><strong>Self-selection.</strong> We only see problems people chose to attempt, which is why 94% are solved. Estimates for problems far from a user’s usual choices are extrapolations.</li>
+        <li><strong>Sample.</strong> 400 rated users balanced by rating band, not a random sample of Codeforces. Prolific users contribute many more rows and so more weight.</li>
+        <li><strong>Snapshot metadata.</strong> Problem ratings and tags were fetched in 2026. Older attempts may have seen different values, and ratings are partly derived from how many people solved a problem.</li>
+        <li><strong>Target definition.</strong> A solve after twenty wrong submissions counts the same as a first-try solve, and 30 days is a choice. Other windows would shift the base rate.</li>
+        <li><strong>Skill gaps</strong> did not add predictive value beyond overall skill and difficulty. <strong>Recommendations</strong> were tested offline on users’ own choices, not in a controlled experiment.</li>
+        <li><strong>Change over time.</strong> The test year may differ from earlier years, for example through AI-assisted solving, and relationships learned from the past may weaken.</li>
+      </ul>
+    </section>
+
+    <section id="conclusion" aria-labelledby="h-conclusion">
+      <h2 id="h-conclusion"><span class="num">10</span>Conclusion</h2>
+      <p id="conclusion-text">Classical models estimate solve probability well beyond the rating-gap rule.</p>
+    </section>
+
+    <section id="reproduce" aria-labelledby="h-repro">
+      <h2 id="h-repro"><span class="num">11</span>Reproduce</h2>
+      <p>The <a href="https://github.com/sarthaksaini041/ML-project-2026">source repository on GitHub</a> includes the collection code, the processed data tables, the analysis notebook, tests, and the pipeline that writes every number on this page.</p>
+      <ol class="steps">
+        <li><code>pip install -r requirements.txt</code></li>
+        <li>Optional, several hours: <code>python -m src.collect --config config.json</code> recollects the raw data from the API. The processed tables are already included.</li>
+        <li><code>python -m src.pipeline</code> builds the dataset, tunes and tests all models, evaluates skill gaps and recommendations, and exports this site’s data. Or run <code>notebooks/skill_gap_estimator.ipynb</code> for the same steps with plots.</li>
+        <li><code>python -m pytest tests</code> and <code>node tests/check_parity.mjs</code> check the feature engine and that this page reproduces Python’s predictions exactly.</li>
+      </ol>
+      <p><a href="./notebook.html">Read the executed notebook</a> · <a href="https://github.com/sarthaksaini041/ML-project-2026">View the repository</a> · <a href="https://github.com/sarthaksaini041/ML-project-2026/blob/main/results/metrics.json">Full results (metrics.json)</a></p>
+      <div class="credits">
+        <div class="credit-box">
+          <h3>Team</h3>
+          <p>Sarthak Saini (26120007) and Aditya Anup Dhomne (26120001), ES 335 Machine Learning, IIT Gandhinagar, 2026.</p>
+        </div>
+        <div class="credit-box">
+          <h3>Use of AI tools</h3>
+          <p>We used AI assistants for brainstorming, coding help, debugging and editing the text and website. We ran and checked every analysis ourselves and are responsible for all results.</p>
+        </div>
+      </div>
+    </section>
+  </article>
+  </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,926 @@
+{
+  "data": {
+    "users_sampled": 400,
+    "users_complete": 400,
+    "submissions": 668355,
+    "solo_submissions": 605485,
+    "catalog_problems": 11511,
+    "interactions": 252109,
+    "users_with_rows": 393,
+    "solved_rate": 0.9443415348123232,
+    "data_end": "2026-11-10",
+    "first_attempt": "2010-02-22",
+    "cuts": [
+      "2025-01-04",
+      "2025-10-25"
+    ],
+    "embargo_dropped": 7383,
+    "partitions": {
+      "train": {
+        "rows": 173032,
+        "users": 283,
+        "solved_rate": 0.944674973415322,
+        "start": "2010-02-22",
+        "end": "2024-12-04"
+      },
+      "val": {
+        "rows": 33877,
+        "users": 277,
+        "solved_rate": 0.9447707884405349,
+        "start": "2025-01-04",
+        "end": "2025-09-25"
+      },
+      "test": {
+        "rows": 37817,
+        "users": 335,
+        "solved_rate": 0.9434910225559934,
+        "start": "2025-10-25",
+        "end": "2026-10-11"
+      }
+    },
+    "features": 47,
+    "tags": [
+      "binary search",
+      "bitmasks",
+      "brute force",
+      "combinatorics",
+      "constructive algorithms",
+      "data structures",
+      "dfs and similar",
+      "divide and conquer",
+      "dp",
+      "dsu",
+      "games",
+      "geometry",
+      "graphs",
+      "greedy",
+      "hashing",
+      "implementation",
+      "interactive",
+      "math",
+      "number theory",
+      "probabilities",
+      "shortest paths",
+      "sortings",
+      "strings",
+      "trees",
+      "two pointers"
+    ]
+  },
+  "eda": {
+    "gap": [
+      [
+        "600+ below",
+        58209,
+        0.9882492398082771
+      ],
+      [
+        "300\u2013599 below",
+        29435,
+        0.968948530660778
+      ],
+      [
+        "100\u2013299 below",
+        19892,
+        0.9505328775387091
+      ],
+      [
+        "Within 100",
+        21212,
+        0.925985291344522
+      ],
+      [
+        "100\u2013299 above",
+        17738,
+        0.9001578531965272
+      ],
+      [
+        "300\u2013599 above",
+        16231,
+        0.868954469841661
+      ],
+      [
+        "600+ above",
+        10315,
+        0.8523509452253999
+      ]
+    ],
+    "tags": [
+      [
+        "dfs and similar",
+        15708,
+        0.923414820473644
+      ],
+      [
+        "graphs",
+        16239,
+        0.9235174579715499
+      ],
+      [
+        "data structures",
+        29977,
+        0.9250758915168296
+      ],
+      [
+        "binary search",
+        20579,
+        0.9307060595752952
+      ],
+      [
+        "dp",
+        36027,
+        0.9323007744191856
+      ],
+      [
+        "brute force",
+        34706,
+        0.9405866420791794
+      ],
+      [
+        "constructive algorithms",
+        38182,
+        0.9429574144885025
+      ],
+      [
+        "number theory",
+        15909,
+        0.9443711106920611
+      ],
+      [
+        "greedy",
+        67799,
+        0.9463118925057892
+      ],
+      [
+        "sortings",
+        23942,
+        0.9481664021385013
+      ],
+      [
+        "math",
+        63011,
+        0.9512783482249131
+      ],
+      [
+        "implementation",
+        51947,
+        0.9522397828556028
+      ]
+    ],
+    "bands": [
+      [
+        "Below 1200",
+        15745,
+        0.9114639568116862
+      ],
+      [
+        "1200\u20131599",
+        33617,
+        0.9219740012493679
+      ],
+      [
+        "1600\u20131999",
+        41489,
+        0.9420569307527297
+      ],
+      [
+        "2000\u20132399",
+        51636,
+        0.959001471841351
+      ],
+      [
+        "2400 and above",
+        30545,
+        0.9661155671959404
+      ]
+    ],
+    "modes": [
+      [
+        "PRACTICE",
+        89902,
+        0.9490111454695113
+      ],
+      [
+        "CONTESTANT",
+        51701,
+        0.9274675538190751
+      ],
+      [
+        "VIRTUAL",
+        16113,
+        0.9618941227580214
+      ],
+      [
+        "OUT_OF_COMPETITION",
+        15316,
+        0.9591930007834943
+      ]
+    ],
+    "timeline": [
+      [
+        "2023Q1",
+        7889,
+        0.9523386994549372
+      ],
+      [
+        "2023Q2",
+        6418,
+        0.9417263945154254
+      ],
+      [
+        "2023Q3",
+        9337,
+        0.9491271286280389
+      ],
+      [
+        "2023Q4",
+        9071,
+        0.948627494212325
+      ],
+      [
+        "2024Q1",
+        8579,
+        0.9538407739829817
+      ],
+      [
+        "2024Q2",
+        8731,
+        0.9483449776657886
+      ],
+      [
+        "2024Q3",
+        9541,
+        0.94927156482549
+      ],
+      [
+        "2024Q4",
+        9636,
+        0.9429223744292238
+      ],
+      [
+        "2025Q1",
+        10772,
+        0.9442072038618641
+      ],
+      [
+        "2025Q2",
+        10886,
+        0.9437810031232776
+      ],
+      [
+        "2025Q3",
+        12929,
+        0.9453167298321603
+      ],
+      [
+        "2025Q4",
+        11505,
+        0.9352455454150369
+      ],
+      [
+        "2026Q1",
+        11169,
+        0.9433252753156057
+      ],
+      [
+        "2026Q2",
+        8757,
+        0.943702181112253
+      ],
+      [
+        "2026Q3",
+        8833,
+        0.9516585531529491
+      ],
+      [
+        "2026Q4",
+        1008,
+        0.9375
+      ]
+    ]
+  },
+  "tuning": [
+    {
+      "family": "Baseline (rating gap)",
+      "params": "{}",
+      "validation ROC-AUC": 0.7093831000353922,
+      "seconds": 0.016021940000428003
+    },
+    {
+      "family": "Logistic Regression",
+      "params": "{'logisticregression__C': 0.01}",
+      "validation ROC-AUC": 0.783982596395191,
+      "seconds": 1.6295819690003555
+    },
+    {
+      "family": "Logistic Regression",
+      "params": "{'logisticregression__C': 0.1}",
+      "validation ROC-AUC": 0.7842004871280649,
+      "seconds": 2.2896893199995247
+    },
+    {
+      "family": "Logistic Regression",
+      "params": "{'logisticregression__C': 1.0}",
+      "validation ROC-AUC": 0.7843015337884435,
+      "seconds": 2.0382542410006863
+    },
+    {
+      "family": "Logistic Regression",
+      "params": "{'logisticregression__C': 10.0}",
+      "validation ROC-AUC": 0.7842795409853169,
+      "seconds": 2.4388482740014297
+    },
+    {
+      "family": "Random Forest",
+      "params": "{'max_depth': 10, 'max_leaf_nodes': None, 'min_samples_leaf': 50}",
+      "validation ROC-AUC": 0.7993919115179267,
+      "seconds": 19.2581097530001
+    },
+    {
+      "family": "Random Forest",
+      "params": "{'max_depth': 16, 'max_leaf_nodes': None, 'min_samples_leaf': 50}",
+      "validation ROC-AUC": 0.800977522486848,
+      "seconds": 23.45613969599981
+    },
+    {
+      "family": "Random Forest",
+      "params": "{'max_depth': None, 'max_leaf_nodes': None, 'min_samples_leaf': 100}",
+      "validation ROC-AUC": 0.8004944322805856,
+      "seconds": 22.796571359000154
+    },
+    {
+      "family": "Gradient Boosting",
+      "params": "{'learning_rate': 0.05, 'max_depth': None, 'max_leaf_nodes': 15, 'min_samples_leaf': 100}",
+      "validation ROC-AUC": 0.8099592530302224,
+      "seconds": 6.076234190000832
+    },
+    {
+      "family": "Gradient Boosting",
+      "params": "{'learning_rate': 0.05, 'max_depth': None, 'max_leaf_nodes': 31, 'min_samples_leaf': 100}",
+      "validation ROC-AUC": 0.8077758202271869,
+      "seconds": 7.010964991999572
+    },
+    {
+      "family": "Gradient Boosting",
+      "params": "{'learning_rate': 0.1, 'max_depth': None, 'max_leaf_nodes': 15, 'min_samples_leaf': 100}",
+      "validation ROC-AUC": 0.8071223651177377,
+      "seconds": 5.3495574120006495
+    },
+    {
+      "family": "Gradient Boosting",
+      "params": "{'learning_rate': 0.03, 'max_depth': None, 'max_leaf_nodes': 63, 'min_samples_leaf': 100}",
+      "validation ROC-AUC": 0.807189011493803,
+      "seconds": 10.892948364000404
+    }
+  ],
+  "evaluation": {
+    "table": [
+      {
+        "model": "Baseline (rating gap)",
+        "validation ROC-AUC": 0.7093831000353922,
+        "ROC-AUC": 0.6941943058035761,
+        "Cross-entropy": 1.067622174745528,
+        "Precision (not solved)": 0.10697934115019542,
+        "Recall (not solved)": 0.44829199812821713,
+        "F1 (not solved)": 0.17273710782545978,
+        "Accuracy": 0.7573578020466986,
+        "threshold P(not solved)": 0.8196458144946892
+      },
+      {
+        "model": "Logistic Regression",
+        "validation ROC-AUC": 0.7843015337884435,
+        "ROC-AUC": 0.7729409208038595,
+        "Cross-entropy": 0.1861518072471,
+        "Precision (not solved)": 0.2779430514237144,
+        "Recall (not solved)": 0.30603649976602715,
+        "F1 (not solved)": 0.2913140311804009,
+        "Accuracy": 0.9158579474839358,
+        "threshold P(not solved)": 0.151597696444257
+      },
+      {
+        "model": "Random Forest",
+        "validation ROC-AUC": 0.800977522486848,
+        "ROC-AUC": 0.7973620609336671,
+        "Cross-entropy": 0.18137498594641746,
+        "Precision (not solved)": 0.30572645527685754,
+        "Recall (not solved)": 0.30229293401965374,
+        "F1 (not solved)": 0.304,
+        "Accuracy": 0.921781209508951,
+        "threshold P(not solved)": 0.17483114326489524
+      },
+      {
+        "model": "Gradient Boosting",
+        "validation ROC-AUC": 0.8099592530302224,
+        "ROC-AUC": 0.7997525907510425,
+        "Cross-entropy": 0.1795866523439811,
+        "Precision (not solved)": 0.3282801881860951,
+        "Recall (not solved)": 0.2938699110903135,
+        "F1 (not solved)": 0.31012345679012343,
+        "Accuracy": 0.9261178834915514,
+        "threshold P(not solved)": 0.19629684811129564
+      }
+    ],
+    "confusion": {
+      "Baseline (rating gap)": {
+        "tn": 27683,
+        "fp": 7997,
+        "fn": 1179,
+        "tp": 958
+      },
+      "Logistic Regression": {
+        "tn": 33981,
+        "fp": 1699,
+        "fn": 1483,
+        "tp": 654
+      },
+      "Random Forest": {
+        "tn": 34213,
+        "fp": 1467,
+        "fn": 1491,
+        "tp": 646
+      },
+      "Gradient Boosting": {
+        "tn": 34395,
+        "fp": 1285,
+        "fn": 1509,
+        "tp": 628
+      }
+    },
+    "positive_rate_not_solved": 0.056508977444006625,
+    "best": "Gradient Boosting",
+    "runner_up": "Random Forest",
+    "auc_ci": [
+      0.7793732440989757,
+      0.8183147579068212
+    ],
+    "diff_ci": [
+      -0.003235534216457086,
+      0.007739744757343945
+    ],
+    "calibration": [
+      {
+        "low": 0,
+        "high": 0.6,
+        "n": 478,
+        "predicted": 0.46745535368971647,
+        "observed": 0.4602510460251046
+      },
+      {
+        "low": 0.6,
+        "high": 0.8,
+        "n": 1356,
+        "predicted": 0.7262718738448352,
+        "observed": 0.7396755162241888
+      },
+      {
+        "low": 0.8,
+        "high": 0.9,
+        "n": 3148,
+        "predicted": 0.8601959916935938,
+        "observed": 0.852287166454892
+      },
+      {
+        "low": 0.9,
+        "high": 0.95,
+        "n": 6694,
+        "predicted": 0.9306132400788597,
+        "observed": 0.931580519868539
+      },
+      {
+        "low": 0.95,
+        "high": 0.98,
+        "n": 12208,
+        "predicted": 0.9669982178863097,
+        "observed": 0.9623197903014417
+      },
+      {
+        "low": 0.98,
+        "high": 1.0,
+        "n": 13933,
+        "predicted": 0.9906589623736639,
+        "observed": 0.9897365965692959
+      }
+    ],
+    "segments": {
+      "user_rating": [
+        {
+          "segment": "Below 1200",
+          "rows": 6627,
+          "solved_rate": 0.91021578391429,
+          "ROC-AUC": 0.7732276597641708,
+          "baseline ROC-AUC": 0.6624809141163097
+        },
+        {
+          "segment": "1200\u20131599",
+          "rows": 11027,
+          "solved_rate": 0.9377890632084882,
+          "ROC-AUC": 0.7942455982766102,
+          "baseline ROC-AUC": 0.6822751604682653
+        },
+        {
+          "segment": "1600\u20131999",
+          "rows": 9029,
+          "solved_rate": 0.9544800088603389,
+          "ROC-AUC": 0.7733959759435209,
+          "baseline ROC-AUC": 0.669558537300134
+        },
+        {
+          "segment": "2000\u20132399",
+          "rows": 5195,
+          "solved_rate": 0.9532242540904716,
+          "ROC-AUC": 0.7982184527014899,
+          "baseline ROC-AUC": 0.6573978506418823
+        },
+        {
+          "segment": "2400 and above",
+          "rows": 5939,
+          "solved_rate": 0.9659875399898973,
+          "ROC-AUC": 0.837676054514986,
+          "baseline ROC-AUC": 0.7597469612744786
+        }
+      ],
+      "problem_rating": [
+        {
+          "segment": "Below 1200",
+          "rows": 13589,
+          "solved_rate": 0.9700493045845905,
+          "ROC-AUC": 0.7797899898491614,
+          "baseline ROC-AUC": 0.6977536563335379
+        },
+        {
+          "segment": "1200\u20131599",
+          "rows": 8450,
+          "solved_rate": 0.9391715976331361,
+          "ROC-AUC": 0.7833447002086733,
+          "baseline ROC-AUC": 0.6808296625925694
+        },
+        {
+          "segment": "1600\u20131999",
+          "rows": 6751,
+          "solved_rate": 0.9320100725818398,
+          "ROC-AUC": 0.7992869182708755,
+          "baseline ROC-AUC": 0.6975652590625853
+        },
+        {
+          "segment": "2000\u20132399",
+          "rows": 4497,
+          "solved_rate": 0.9223927062486101,
+          "ROC-AUC": 0.7797695855081194,
+          "baseline ROC-AUC": 0.6460713624545126
+        },
+        {
+          "segment": "2400 and above",
+          "rows": 4530,
+          "solved_rate": 0.909933774834437,
+          "ROC-AUC": 0.7897050498996299,
+          "baseline ROC-AUC": 0.5398355666866456
+        }
+      ],
+      "mode": [
+        {
+          "segment": "PRACTICE",
+          "rows": 22519,
+          "solved_rate": 0.9450686087304054,
+          "ROC-AUC": 0.7520919565169332,
+          "baseline ROC-AUC": 0.6184983161407156
+        },
+        {
+          "segment": "VIRTUAL",
+          "rows": 2683,
+          "solved_rate": 0.9686917629519195,
+          "ROC-AUC": 0.773488887667418,
+          "baseline ROC-AUC": 0.7379188882170798
+        },
+        {
+          "segment": "OUT_OF_COMPETITION",
+          "rows": 2164,
+          "solved_rate": 0.9288354898336414,
+          "ROC-AUC": 0.8786069651741293,
+          "baseline ROC-AUC": 0.8425906183368871
+        },
+        {
+          "segment": "CONTESTANT",
+          "rows": 10451,
+          "solved_rate": 0.9366567792555737,
+          "ROC-AUC": 0.8687709461171506,
+          "baseline ROC-AUC": 0.8490733788064104
+        }
+      ],
+      "tags": [
+        {
+          "segment": "number theory",
+          "rows": 3919,
+          "solved_rate": 0.933146210768053,
+          "ROC-AUC": 0.8296376081007459,
+          "baseline ROC-AUC": 0.7256239732646999
+        },
+        {
+          "segment": "strings",
+          "rows": 2965,
+          "solved_rate": 0.9537942664418212,
+          "ROC-AUC": 0.8216944217883728,
+          "baseline ROC-AUC": 0.7329391176865341
+        },
+        {
+          "segment": "dp",
+          "rows": 9134,
+          "solved_rate": 0.932012261878695,
+          "ROC-AUC": 0.8181074015245794,
+          "baseline ROC-AUC": 0.6704150306824478
+        },
+        {
+          "segment": "greedy",
+          "rows": 17432,
+          "solved_rate": 0.9379876089949518,
+          "ROC-AUC": 0.8153449836668762,
+          "baseline ROC-AUC": 0.7310153285653969
+        },
+        {
+          "segment": "divide and conquer",
+          "rows": 1238,
+          "solved_rate": 0.9184168012924071,
+          "ROC-AUC": 0.8130132274441165,
+          "baseline ROC-AUC": 0.6372858921776081
+        },
+        {
+          "segment": "math",
+          "rows": 14697,
+          "solved_rate": 0.9478124787371572,
+          "ROC-AUC": 0.8086064050930758,
+          "baseline ROC-AUC": 0.7061248690837312
+        },
+        {
+          "segment": "bitmasks",
+          "rows": 3132,
+          "solved_rate": 0.9220945083014048,
+          "ROC-AUC": 0.808211479950956,
+          "baseline ROC-AUC": 0.6840310101721084
+        },
+        {
+          "segment": "constructive algorithms",
+          "rows": 8013,
+          "solved_rate": 0.9298639710470485,
+          "ROC-AUC": 0.8075965823689862,
+          "baseline ROC-AUC": 0.7176774380280943
+        },
+        {
+          "segment": "trees",
+          "rows": 3144,
+          "solved_rate": 0.9192111959287532,
+          "ROC-AUC": 0.7944595809606844,
+          "baseline ROC-AUC": 0.607683295643408
+        },
+        {
+          "segment": "implementation",
+          "rows": 8880,
+          "solved_rate": 0.9431306306306306,
+          "ROC-AUC": 0.7936750701935865,
+          "baseline ROC-AUC": 0.7046574257425743
+        },
+        {
+          "segment": "two pointers",
+          "rows": 3171,
+          "solved_rate": 0.9385052034058656,
+          "ROC-AUC": 0.793277846705266,
+          "baseline ROC-AUC": 0.6782964571271023
+        },
+        {
+          "segment": "data structures",
+          "rows": 6604,
+          "solved_rate": 0.9326165960024227,
+          "ROC-AUC": 0.7911358366581471,
+          "baseline ROC-AUC": 0.6165261032087874
+        },
+        {
+          "segment": "binary search",
+          "rows": 4913,
+          "solved_rate": 0.9303887645023408,
+          "ROC-AUC": 0.7885439095441513,
+          "baseline ROC-AUC": 0.6562632333769595
+        },
+        {
+          "segment": "brute force",
+          "rows": 7006,
+          "solved_rate": 0.941906936911219,
+          "ROC-AUC": 0.7880408132719089,
+          "baseline ROC-AUC": 0.6954467451512458
+        },
+        {
+          "segment": "games",
+          "rows": 1909,
+          "solved_rate": 0.9507595599790466,
+          "ROC-AUC": 0.7850419084461638,
+          "baseline ROC-AUC": 0.6927671297110368
+        },
+        {
+          "segment": "dfs and similar",
+          "rows": 3402,
+          "solved_rate": 0.9271017048794826,
+          "ROC-AUC": 0.7845759097510586,
+          "baseline ROC-AUC": 0.6242412348886207
+        },
+        {
+          "segment": "sortings",
+          "rows": 5289,
+          "solved_rate": 0.9461145774248441,
+          "ROC-AUC": 0.7817114729269216,
+          "baseline ROC-AUC": 0.6846242304402093
+        },
+        {
+          "segment": "combinatorics",
+          "rows": 2833,
+          "solved_rate": 0.952347334980586,
+          "ROC-AUC": 0.7809900337698706,
+          "baseline ROC-AUC": 0.6581830162260112
+        },
+        {
+          "segment": "dsu",
+          "rows": 1568,
+          "solved_rate": 0.9260204081632653,
+          "ROC-AUC": 0.7761767360121592,
+          "baseline ROC-AUC": 0.624171772584782
+        },
+        {
+          "segment": "graphs",
+          "rows": 3079,
+          "solved_rate": 0.9304969145826567,
+          "ROC-AUC": 0.7627195772373636,
+          "baseline ROC-AUC": 0.5969140937189086
+        },
+        {
+          "segment": "interactive",
+          "rows": 1105,
+          "solved_rate": 0.9122171945701357,
+          "ROC-AUC": 0.761454753722795,
+          "baseline ROC-AUC": 0.687586933398789
+        }
+      ]
+    },
+    "errors": {
+      "confident_miss_count": 143,
+      "confident_count": 13933,
+      "surprise_count": 220,
+      "low_count": 478,
+      "confident_miss_modes": {
+        "PRACTICE": 0.664,
+        "OUT_OF_COMPETITION": 0.154,
+        "CONTESTANT": 0.126,
+        "VIRTUAL": 0.056
+      },
+      "confident_miss_examples": [
+        {
+          "problem": "Drowning",
+          "key": "2227:G",
+          "problem_rating": 2000,
+          "user_rating": 1786,
+          "mode": "practice",
+          "p": 0.9823578116522008,
+          "prior_attempted": 147
+        },
+        {
+          "problem": "The BOSS Can Count Pairs",
+          "key": "1830:B",
+          "problem_rating": 2000,
+          "user_rating": 1772,
+          "mode": "practice",
+          "p": 0.9836369429855866,
+          "prior_attempted": 384
+        },
+        {
+          "problem": "Nested Segments",
+          "key": "976:C",
+          "problem_rating": 1500,
+          "user_rating": 1501,
+          "mode": "practice",
+          "p": 0.9825438864160729,
+          "prior_attempted": 467
+        },
+        {
+          "problem": "Cut and Stick",
+          "key": "1514:D",
+          "problem_rating": 2000,
+          "user_rating": 2579,
+          "mode": "practice",
+          "p": 0.9900343816033156,
+          "prior_attempted": 2732
+        }
+      ],
+      "surprise_examples": [
+        {
+          "problem": "XOR-convenience (Hard Version)",
+          "key": "2189:C2",
+          "problem_rating": 1800,
+          "user_rating": 1353,
+          "mode": "contestant",
+          "p": 0.5893977659314609,
+          "prior_attempted": 103
+        },
+        {
+          "problem": "The Robotic Rush",
+          "key": "2185:E",
+          "problem_rating": 1500,
+          "user_rating": 995,
+          "mode": "contestant",
+          "p": 0.4086994520522364,
+          "prior_attempted": 160
+        },
+        {
+          "problem": "Recommendations",
+          "key": "2042:D",
+          "problem_rating": 1900,
+          "user_rating": 1259,
+          "mode": "practice",
+          "p": 0.587044486925657,
+          "prior_attempted": 129
+        },
+        {
+          "problem": "XOR Problem",
+          "key": "2271:C",
+          "problem_rating": 1400,
+          "user_rating": 972,
+          "mode": "contestant",
+          "p": 0.45807526958112177,
+          "prior_attempted": 148
+        }
+      ]
+    },
+    "importance": [
+      {
+        "feature": "near_solve_rate",
+        "drop": 0.12465244852683861
+      },
+      {
+        "feature": "contest_mode",
+        "drop": 0.02982620345934391
+      },
+      {
+        "feature": "elo_prob",
+        "drop": 0.01643012628833836
+      },
+      {
+        "feature": "log_prior_attempted",
+        "drop": 0.00960490075374687
+      },
+      {
+        "feature": "rating_gap",
+        "drop": 0.008566499220109547
+      },
+      {
+        "feature": "problem_rating",
+        "drop": 0.006421563785381316
+      },
+      {
+        "feature": "log_recent_attempted",
+        "drop": 0.005795012422344444
+      },
+      {
+        "feature": "prior_solve_rate",
+        "drop": 0.0053280216571755705
+      },
+      {
+        "feature": "log_near_attempted",
+        "drop": 0.0031623918483881055
+      },
+      {
+        "feature": "tag_combinatorics",
+        "drop": 0.0017383666000292768
+      },
+      {
+        "feature": "log_days_active",
+        "drop": 0.0016818312312910644
+      },
+      {
+        "feature": "log_contests",
+        "drop": 0.0016544372397305773
+      }
+    ]
+  },
+  "skill_gaps": {
+    "users": 152,
+    "ablation_auc": 0.7999860062196911,
+    "mean_weak_rate": 0.8924761945332416,
+    "mean_strong_rate": 0.939163230227669,
+    "mean_resid_diff": -0.012803278161942568,
+    "resid_diff_ci": [
+      -0.028926692165872517,
+      0.003238303010614554
+    ],
+    "share_users_weak_lower": 0.46710526315789475
+  },
+  "recommendations": {
+    "users": 191,
+    "stretch_rows": 15725,
+    "stretch_solved_rate": 0.905818759936407,
+    "model_auc": 0.6548066041995411,
+    "rating_auc": 0.6219457276854248,
+    "auc_diff_ci": [
+      0.0009879926497246426,
+      0.06518132960097255
+    ],
+    "share_users_model_better": 0.5706806282722513,
+    "model_top5": 0.900523560209424,
+    "rating_top5": 0.8879581151832461,
+    "model_top5_gap": 274.37696335078533,
+    "rating_top5_gap": 80.74973821989528
+  }
+}
